@@ -1,5 +1,5 @@
 #
-# Copyright (C) 2022 TeamWin Recovery Project
+# Copyright (C) 2021-2026 TeamWin Recovery Project
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,7 +14,7 @@
 # limitations under the License.
 #
 
-DEVICE_PATH := device/realme/RMX2061
+DEVICE_PATH := device/realme/sm7125
 
 # Architecture
 TARGET_ARCH := arm64
@@ -57,7 +57,10 @@ BOARD_KERNEL_CMDLINE := console=ttyMSM0,115200n8 \
 	androidboot.selinux=permissive \
 	earlycon=msm_geni_serial,0xa88000 \
 	androidboot.init_fatal_reboot_target=recovery \
-       cgroup.memory=nokmem,nosocket
+	cgroup.memory=nokmem,nosocket \
+	kpti=off \
+	irqaffinity=0-3
+
 BOARD_KERNEL_IMAGE_NAME := Image
 BOARD_KERNEL_PAGESIZE := 4096
 BOARD_BOOT_HEADER_VERSION := 2
@@ -73,7 +76,8 @@ BOARD_INCLUDE_RECOVERY_DTBO := true
 BOARD_INCLUDE_DTB_IN_BOOTIMG := true
 
 TARGET_PREBUILT_KERNEL := $(DEVICE_PATH)/prebuilt/kernel
-BOARD_PREBUILT_DTBIMAGE_DIR := $(DEVICE_PATH)/prebuilt/dtbs
+TARGET_PREBUILT_DTB := $(DEVICE_PATH)/prebuilt/dtb
+BOARD_PREBUILT_DTBIMAGE_DIR := $(DEVICE_PATH)/prebuilt/dts
 BOARD_PREBUILT_DTBOIMAGE := $(DEVICE_PATH)/prebuilt/dtbo
 
 BOARD_MKBOOTIMG_ARGS += --base $(BOARD_KERNEL_BASE)
@@ -82,11 +86,12 @@ BOARD_MKBOOTIMG_ARGS += --ramdisk_offset $(BOARD_RAMDISK_OFFSET)
 BOARD_MKBOOTIMG_ARGS += --tags_offset $(BOARD_KERNEL_TAGS_OFFSET)
 BOARD_MKBOOTIMG_ARGS += --kernel_offset $(BOARD_KERNEL_OFFSET)
 BOARD_MKBOOTIMG_ARGS += --second_offset $(BOARD_KERNEL_SECOND_OFFSET)
+BOARD_MKBOOTIMG_ARGS += --dtb $(TARGET_PREBUILT_DTB)
 BOARD_MKBOOTIMG_ARGS += --dtb_offset $(BOARD_DTB_OFFSET)
 BOARD_MKBOOTIMG_ARGS += --header_version $(BOARD_BOOT_HEADER_VERSION)
 
 # Assert
-TARGET_OTA_ASSERT_DEVICE := RMX2061
+TARGET_OTA_ASSERT_DEVICE := RMX2061,RMX2063,RMX2170,RMX3081,sm7125,atoll
 
 # Android Verified Boot
 BOARD_AVB_ENABLE := true
@@ -99,11 +104,14 @@ BOARD_AVB_RECOVERY_ROLLBACK_INDEX_LOCATION := 1
 BOARD_FLASH_BLOCK_SIZE := 262144
 BOARD_BOOTIMAGE_PARTITION_SIZE := 67108864
 BOARD_RECOVERYIMAGE_PARTITION_SIZE := 100663296
+BOARD_CACHEIMAGE_PARTITION_SIZE := 268435456
+BOARD_CACHEIMAGE_FILE_SYSTEM_TYPE := ext4
+BOARD_DTBOIMG_PARTITION_SIZE := 25165824
 
 # Dynamic Partitions
-BOARD_SUPER_PARTITION_SIZE := 8178892800
+BOARD_SUPER_PARTITION_SIZE := 8476688384
 BOARD_SUPER_PARTITION_GROUPS := qti_dynamic_partitions
-BOARD_QTI_DYNAMIC_PARTITIONS_SIZE := 8178892800
+BOARD_QTI_DYNAMIC_PARTITIONS_SIZE := 8472494080
 BOARD_QTI_DYNAMIC_PARTITIONS_PARTITION_LIST := system system_ext product vendor odm
 
 # System as root
@@ -113,25 +121,33 @@ BOARD_SUPPRESS_SECURE_ERASE := true
 # File systems
 TARGET_USERIMAGES_USE_EXT4 := true
 TARGET_USERIMAGES_USE_F2FS := true
+BOARD_HAS_LARGE_FILESYSTEM := true
 
 # Workaround for error copying vendor files to recovery ramdisk
 BOARD_VENDORIMAGE_FILE_SYSTEM_TYPE := ext4
 TARGET_COPY_OUT_VENDOR := vendor
 
 # Recovery
-BOARD_HAS_LARGE_FILESYSTEM := true
 TARGET_RECOVERY_PIXEL_FORMAT := "BGRA_8888"
 
-# Crypto
-PLATFORM_VERSION := 127
-PLATFORM_SECURITY_PATCH := 2127-12-31
-VENDOR_SECURITY_PATCH := $(PLATFORM_SECURITY_PATCH)
-BOOT_SECURITY_PATCH := $(PLATFORM_SECURITY_PATCH)
+# Crypto & Decryption (QTI FBE v2 for modern Android)
 TW_INCLUDE_CRYPTO := true
 TW_INCLUDE_CRYPTO_FBE := true
+TW_INCLUDE_FBE_METADATA_ENCRYPTED := true
 BOARD_USES_QCOM_FBE_DECRYPTION := true
-TW_USE_FSCRYPT_POLICY := 1
-PLATFORM_VERSION_LAST_STABLE := $(PLATFORM_VERSION)
+BOARD_USES_QCOM_FBE_DECRYPTION_V2 := true
+TW_USE_FSCRYPT := 1
+PLATFORM_VERSION := 16
+PLATFORM_SECURITY_PATCH := 2099-12-31
+VENDOR_SECURITY_PATCH := $(PLATFORM_SECURITY_PATCH)
+
+# Touch / Input (AIDL & HIDX for modern Android touch HAL)
+TW_SUPPORT_INPUT_AIDL := true
+TW_SUPPORT_INPUT_AIDL_HIDX := true
+TW_INPUT_BLACKLIST := "hbtp_vm"
+
+# Fastbootd
+TW_INCLUDE_FASTBOOTD := true
 
 # TWRP specific build flags
 TW_THEME := portrait_hdpi
@@ -139,34 +155,26 @@ RECOVERY_SDCARD_ON_DATA := true
 TARGET_RECOVERY_QCOM_RTC_FIX := true
 TW_EXCLUDE_DEFAULT_USB_INIT := true
 TW_INCLUDE_NTFS_3G := true
-TW_INPUT_BLACKLIST := "hbtp_vm"
 TW_NO_SCREEN_BLANK := true
-TW_DELAY_TOUCH_INIT_MS := 5000
 
-# Set brightness path and level
+# Brightness
 TW_BRIGHTNESS_PATH := "/sys/class/backlight/panel0-backlight/brightness"
 TW_MAX_BRIGHTNESS := 2047
 TW_DEFAULT_BRIGHTNESS := 1200
 
-# Qcom EDL mode
+# QCOM EDL Mode
 TW_HAS_EDL_MODE := true
 
-# Include some binaries
+# Tools and Binaries
 TW_INCLUDE_LIBRESETPROP := true
 TW_INCLUDE_REPACKTOOLS := true
 TW_INCLUDE_RESETPROP := true
-TW_INCLUDE_BASH := true
+TW_USE_TOOLBOX := true
+TW_HAS_MTP := true
 
-# Fix stock .ozip installation
-TW_SKIP_COMPATIBILITY_CHECK := true
-TW_OZIP_DECRYPT_KEY := 0000
-
-# Debug-tools
+# Debug & Logging
 TWRP_INCLUDE_LOGCAT := true
 TARGET_USES_LOGD := true
-
-# Excludes
-TW_USE_SERIALNO_PROPERTY_FOR_DEVICE_ID := true
 
 # Languages
 TW_EXTRA_LANGUAGES := true
@@ -175,8 +183,6 @@ TW_EXTRA_LANGUAGES := true
 TARGET_RECOVERY_FSTAB := $(DEVICE_PATH)/recovery.fstab
 TW_CUSTOM_CPU_TEMP_PATH := "/sys/devices/virtual/thermal/thermal_zone4/temp"
 
-# Other flags
-TW_OVERRIDE_SYSTEM_PROPS := "ro.build.version.sdk"
+# Flags
+TW_NO_LEGACY_PROPS := true
 TW_EXCLUDE_APEX := true
-
-#

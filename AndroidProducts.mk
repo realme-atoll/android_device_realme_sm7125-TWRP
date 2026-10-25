@@ -1,5 +1,5 @@
 #
-# Copyright (C) 2022 TeamWin Recovery Project
+# Copyright (C) 2021-2026 TeamWin Recovery Project
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -15,6 +15,8 @@
 #
 
 PRODUCT_MAKEFILES := \
-    $(LOCAL_DIR)/twrp_RMX2061.mk
+    $(LOCAL_DIR)/twrp_sm7125.mk
 
-COMMON_LUNCH_CHOICES := twrp_RMX2061-eng
+COMMON_LUNCH_CHOICES := \
+    twrp_sm7125-eng \
+    twrp_sm7125-userdebug

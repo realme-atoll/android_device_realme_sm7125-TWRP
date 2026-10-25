@@ -1,5 +1,5 @@
 #
-# Copyright (C) 2022 TeamWin Recovery Project
+# Copyright (C) 2021-2026 TeamWin Recovery Project
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -16,12 +16,12 @@
 
 LOCAL_PATH := $(call my-dir)
 
-ifeq ($(TARGET_DEVICE),RMX2061)
+ifeq ($(TARGET_DEVICE),sm7125)
 include $(call all-subdir-makefiles,$(LOCAL_PATH))
 
 include $(CLEAR_VARS)
 
-# Hack some props to allow stock ROM flashing
+# Reset UTC build date to allow stock and custom ROM zip flashing
 BOARD_RECOVERY_IMAGE_PREPARE := \
     sed -i 's/ro.build.date.utc=.*/ro.build.date.utc=0/' $(TARGET_RECOVERY_ROOT_OUT)/prop.default
 

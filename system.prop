@@ -1,11 +1,17 @@
-ro.product.name=RMX2061
-ro.product.product.device=RMX2061
+# USB
 sys.usb.controller=a600000.dwc3
 sys.usb.rndis.func.name=rndis_bam
 sys.usb.rmnet.func.name=rmnet_bam
 persist.sys.isUsbOtgEnabled=true
+
+# Gatekeeper / Keymaster
 vendor.gatekeeper.disable_spu=true
+
+# Dynamic Partitions & AVB
 ro.boot.dynamic_partitions=true
-ro.adb.secure=0
 ro.boot.avb_version=1.0
 ro.boot.vbmeta.avb_version=1.0
+
+# Platform / Architecture
+ro.product.board=atoll
+ro.board.platform=atoll

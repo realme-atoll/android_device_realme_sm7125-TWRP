@@ -1,5 +1,5 @@
 #
-# Copyright (C) 2022 TeamWin Recovery Project
+# Copyright (C) 2021-2026 TeamWin Recovery Project
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,23 +14,18 @@
 # limitations under the License.
 #
 
-# Dynamic partition stuff
+# Dynamic Partitions
 PRODUCT_USE_DYNAMIC_PARTITIONS := true
 
-# Api
+# Shipping API Level
 PRODUCT_SHIPPING_API_LEVEL := 29
 
-# Fastbootd stuff
+# Fastbootd
 PRODUCT_PACKAGES += \
     android.hardware.fastboot@1.0-impl-mock \
     fastbootd
 
-# realme otacert
-PRODUCT_EXTRA_RECOVERY_KEYS += \
-    $(LOCAL_PATH)/security/realme.special_OTA \
-    $(LOCAL_PATH)/security/realme.local_OTA
-
-# Take a few libraries from sources
+# Recovery HALs and libraries
 TARGET_RECOVERY_DEVICE_MODULES += \
     android.hidl.base@1.0 \
     libcap \
@@ -47,10 +42,14 @@ RECOVERY_LIBRARY_SOURCE_FILES += \
     $(TARGET_OUT_SHARED_LIBRARIES)/libpcrecpp.so \
     $(TARGET_OUT_SHARED_LIBRARIES)/libxml2.so
 
+# Qualcomm Decryption packages
 PRODUCT_PACKAGES += \
     qcom_decrypt \
     qcom_decrypt_fbe
 
-TARGET_USE_CUSTOM_LUN_FILE_PATH := "/config/usb_gadget/g1/functions/mass_storage.0/lun.%d/file"
+# Compression tools for modern payload / images
+PRODUCT_PACKAGES += \
+    lz4 \
+    zstd
 
-#
+TARGET_USE_CUSTOM_LUN_FILE_PATH := "/config/usb_gadget/g1/functions/mass_storage.0/lun.%d/file"
