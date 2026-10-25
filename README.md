@@ -1,3 +1,5 @@
+![TWRP](https://static1.xdaimages.com/wordpress/wp-content/uploads/2018/04/TWRP-Feature-Image.png "TWRP")
+
 TeamWin Recovery Project (TWRP) for realme 6 Pro, 7 Pro & 8 Pro (sm7125)
 ===================================================================================
 
@@ -44,7 +46,21 @@ mka recoveryimage -j$(nproc --all)
 | **Cutout** | Dual Punch-hole Pill (Left) | Single Punch-hole (Left) | Single Punch-hole (Left) |
 
 ---
-## Maintainer
-
-* **Nikhil Suryavanshi** ([@nikhilpal2705](https://github.com/nikhilpal2705))
-* **Organization**: [realme-atoll](https://github.com/realme-atoll)
+## Copyright notice
+```
+/*
+ * Copyright (C) 2021-2026 TeamWin Recovery Project
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+```
