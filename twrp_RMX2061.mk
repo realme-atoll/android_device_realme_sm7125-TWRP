@@ -1,5 +1,5 @@
 #
-# Copyright (C) 2022 TeamWin Recovery Project
+# Copyright (C) 2021-2026 TeamWin Recovery Project
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,20 +14,16 @@
 # limitations under the License.
 #
 
-# Release name
-PRODUCT_RELEASE_NAME := RMX2061
-$(call inherit-product, device/realme/RMX2061/device.mk)
+DEVICE_DIR := $(patsubst %/,%,$(dir $(lastword $(MAKEFILE_LIST))))
+ifeq ($(DEVICE_DIR),)
+  DEVICE_DIR := device/realme/sm7125
+endif
 
-# Inherit some common TWRP stuff.
-$(call inherit-product, vendor/twrp/config/common.mk)
+# Inherit from unified sm7125 base product
+$(call inherit-product, $(DEVICE_DIR)/twrp_sm7125.mk)
 
-# Inherit from common AOSP config
-$(call inherit-product, $(SRC_TARGET_DIR)/product/base.mk)
-
-# Device identifier. This must come after all inclusions
+# Device identifier
 PRODUCT_DEVICE := RMX2061
 PRODUCT_NAME := twrp_RMX2061
-PRODUCT_BRAND := realme
 PRODUCT_MODEL := realme 6 Pro
-PRODUCT_MANUFACTURER := realme
-#
+PRODUCT_RELEASE_NAME := RMX2061
