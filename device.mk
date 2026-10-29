@@ -57,4 +57,9 @@ PRODUCT_PACKAGES += \
     lz4 \
     zstd
 
+# Enable file-based encryption
+PRODUCT_PROPERTY_OVERRIDES += \
+    ro.crypto.file_based=true \
+    ro.crypto.metadata_encryption=true
+
 TARGET_USE_CUSTOM_LUN_FILE_PATH := "/config/usb_gadget/g1/functions/mass_storage.0/lun.%d/file"
