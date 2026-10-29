@@ -7,6 +7,13 @@
 /vendor         ext4    /dev/block/mapper/vendor                      flags=removable
 /odm            ext4    /dev/block/mapper/odm                         flags=removable
 
+# Dynamic Partition Image Flashing
+/system_image   emmc    /dev/block/mapper/system                      flags=display="System Image";flashimg=1
+/system_ext_image emmc  /dev/block/mapper/system_ext                  flags=display="System_EXT Image";flashimg=1
+/product_image  emmc    /dev/block/mapper/product                     flags=display="Product Image";flashimg=1
+/vendor_image   emmc    /dev/block/mapper/vendor                      flags=display="Vendor Image";flashimg=1
+/odm_image      emmc    /dev/block/mapper/odm                         flags=display="ODM Image";flashimg=1
+
 # Core Boot / Kernel / Recovery Partitions
 /boot           emmc    /dev/block/by-name/boot                       flags=display="Boot";flashimg=1;backup=1
 /dtbo           emmc    /dev/block/by-name/dtbo                       flags=display="DTBO";flashimg=1;backup=1
@@ -19,6 +26,7 @@
 /vbmeta_vendor  emmc    /dev/block/by-name/vbmeta_vendor              flags=display="VBMeta Vendor";flashimg=1;backup=1
 
 # Storage & Cache
+/metadata       ext4    /dev/block/by-name/metadata                   flags=display="Metadata";backup=1
 /cache          ext4    /dev/block/by-name/cache                      flags=display="Cache"
 /persist        ext4    /dev/block/by-name/persist                    flags=display="Persist";mounttodecrypt
 /persist_image  emmc    /dev/block/by-name/persist                    flags=display="Persist Image";backup=1;flashimg=1

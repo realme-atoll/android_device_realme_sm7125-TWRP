@@ -13,4 +13,5 @@ odm                                    /odm            erofs   ro               
 odm                                    /odm            ext4    ro,barrier=1,discard                                                           wait,logical,first_stage_mount
 /dev/block/by-name/cache               /cache          ext4    noatime,nosuid,nodev,barrier=1,data=ordered                                    wait,check,first_stage_mount
 /dev/block/by-name/userdata            /data           f2fs    noatime,nosuid,nodev,discard,reserve_root=32768,resgid=1065,fsync_mode=nobarrier,inlinecrypt latemount,wait,resize,check,formattable,fileencryption=ice,wrappedkey,quota,reservedsize=128M,checkpoint=fs
+/dev/block/by-name/metadata            /metadata       ext4    noatime,nosuid,nodev,discard                                                   wait,check,formattable,first_stage_mount
 /dev/block/by-name/misc                /misc           emmc    defaults                                                                       defaults
