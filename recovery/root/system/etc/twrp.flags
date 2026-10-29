@@ -28,6 +28,7 @@
 # Storage & Cache
 /metadata       ext4    /dev/block/by-name/metadata                   flags=display="Metadata";backup=1
 /cache          ext4    /dev/block/by-name/cache                      flags=display="Cache"
+/misc           emmc    /dev/block/by-name/misc                       flags=display="Misc"
 /persist        ext4    /dev/block/by-name/persist                    flags=display="Persist";mounttodecrypt
 /persist_image  emmc    /dev/block/by-name/persist                    flags=display="Persist Image";backup=1;flashimg=1
 /splash         emmc    /dev/block/by-name/splash                     flags=display="Boot Logo";flashimg=1;backup=1

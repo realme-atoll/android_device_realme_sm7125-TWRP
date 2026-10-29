@@ -141,6 +141,9 @@ PLATFORM_VERSION := 16
 PLATFORM_SECURITY_PATCH := 2099-12-31
 VENDOR_SECURITY_PATCH := $(PLATFORM_SECURITY_PATCH)
 
+# Realme / Oppo OZIP Decryption & Stock OTA Support
+TW_OZIP_DECRYPT_KEY := 1c4c1ea3a12531ae491b21bb31613c11
+
 # Touch / Input (AIDL & HIDX for modern Android touch HAL)
 TW_SUPPORT_INPUT_AIDL := true
 TW_SUPPORT_INPUT_AIDL_HIDX := true
@@ -173,6 +176,10 @@ TW_INCLUDE_LPTOOLS := true
 TW_INCLUDE_LPDUMP := true
 TW_USE_TOOLBOX := true
 TW_HAS_MTP := true
+
+# Custom ROM OTA Updating & OpenRecoveryScript Support
+TW_INCLUDE_OPENRECOVERY_SCRIPT := true
+TW_HAS_CUSTOM_ROMS_OTA_UPDATING := true
 
 # Debug & Logging
 TWRP_INCLUDE_LOGCAT := true

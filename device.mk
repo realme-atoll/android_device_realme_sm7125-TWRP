@@ -20,6 +20,11 @@ PRODUCT_USE_DYNAMIC_PARTITIONS := true
 # Shipping API Level
 PRODUCT_SHIPPING_API_LEVEL := 29
 
+# Realme UI Stock OTA Keys
+PRODUCT_EXTRA_RECOVERY_KEYS += \
+    $(LOCAL_PATH)/security/realme.special_OTA \
+    $(LOCAL_PATH)/security/realme.local_OTA
+
 # Fastbootd
 PRODUCT_PACKAGES += \
     android.hardware.fastboot@1.0-impl-mock \
