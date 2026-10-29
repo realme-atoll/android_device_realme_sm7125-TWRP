@@ -127,8 +127,10 @@ BOARD_HAS_LARGE_FILESYSTEM := true
 BOARD_VENDORIMAGE_FILE_SYSTEM_TYPE := ext4
 TARGET_COPY_OUT_VENDOR := vendor
 
-# Recovery
+# Recovery & Bootloader Message (BCB) for GUI Factory Reset
 TARGET_RECOVERY_PIXEL_FORMAT := "BGRA_8888"
+BOARD_USES_METADATA_PARTITION := true
+BOARD_RECOVERY_BLDRMSG_OFFSET := 0
 
 # Crypto & Decryption (QTI FBE v2 for modern Android)
 TW_INCLUDE_CRYPTO := true
