@@ -14,7 +14,10 @@
 # limitations under the License.
 #
 
-DEVICE_PATH := device/realme/sm7125
+DEVICE_PATH ?= $(patsubst %/,%,$(dir $(lastword $(MAKEFILE_LIST))))
+ifeq ($(DEVICE_PATH),)
+  DEVICE_PATH := device/realme/sm7125
+endif
 
 # Architecture
 TARGET_ARCH := arm64

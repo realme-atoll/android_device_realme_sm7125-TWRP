@@ -16,7 +16,7 @@
 
 LOCAL_PATH := $(call my-dir)
 
-ifeq ($(TARGET_DEVICE),sm7125)
+ifneq (,$(filter $(TARGET_DEVICE),sm7125 RMX2061 RMX2063 RMX2170 RMX3081 atoll))
 include $(call all-subdir-makefiles,$(LOCAL_PATH))
 
 include $(CLEAR_VARS)

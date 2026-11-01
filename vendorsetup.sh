@@ -14,6 +14,7 @@
 # limitations under the License.
 #
 
-add_lunch_combo twrp_sm7125-eng
-add_lunch_combo twrp_sm7125-userdebug
-
+for dev in sm7125 RMX2170 RMX2061 RMX3081; do
+    add_lunch_combo twrp_${dev}-eng
+    add_lunch_combo twrp_${dev}-userdebug
+done

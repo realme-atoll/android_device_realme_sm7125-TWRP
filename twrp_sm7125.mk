@@ -14,6 +14,12 @@
 # limitations under the License.
 #
 
+# Determine directory containing this makefile
+DEVICE_DIR := $(patsubst %/,%,$(dir $(lastword $(MAKEFILE_LIST))))
+ifeq ($(DEVICE_DIR),)
+  DEVICE_DIR := device/realme/sm7125
+endif
+
 # Inherit from those products by extension
 $(call inherit-product, $(SRC_TARGET_DIR)/product/core_64_bit.mk)
 $(call inherit-product, $(SRC_TARGET_DIR)/product/base.mk)
@@ -21,8 +27,8 @@ $(call inherit-product, $(SRC_TARGET_DIR)/product/base.mk)
 # Inherit from common TWRP configuration
 $(call inherit-product, vendor/twrp/config/common.mk)
 
-# Inherit from sm7125 device
-$(call inherit-product, device/realme/sm7125/device.mk)
+# Inherit from device makefile
+$(call inherit-product, $(DEVICE_DIR)/device.mk)
 
 # Device identifier
 PRODUCT_DEVICE := sm7125

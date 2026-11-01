@@ -14,6 +14,12 @@
 # limitations under the License.
 #
 
+# Location-independent device path
+DEVICE_PATH ?= $(patsubst %/,%,$(dir $(lastword $(MAKEFILE_LIST))))
+ifeq ($(DEVICE_PATH),)
+  DEVICE_PATH := device/realme/sm7125
+endif
+
 # Dynamic Partitions
 PRODUCT_USE_DYNAMIC_PARTITIONS := true
 
@@ -22,8 +28,8 @@ PRODUCT_SHIPPING_API_LEVEL := 29
 
 # Realme UI Stock OTA Keys
 PRODUCT_EXTRA_RECOVERY_KEYS += \
-    $(LOCAL_PATH)/security/realme.special_OTA \
-    $(LOCAL_PATH)/security/realme.local_OTA
+    $(DEVICE_PATH)/security/realme.special_OTA \
+    $(DEVICE_PATH)/security/realme.local_OTA
 
 # Fastbootd
 PRODUCT_PACKAGES += \
@@ -54,7 +60,6 @@ PRODUCT_PACKAGES += \
 
 # Compression tools for modern payload / images
 PRODUCT_PACKAGES += \
-    lz4 \
     zstd
 
 # Enable file-based encryption

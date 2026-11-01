@@ -15,8 +15,17 @@
 #
 
 PRODUCT_MAKEFILES := \
-    $(LOCAL_DIR)/twrp_sm7125.mk
+    $(LOCAL_DIR)/twrp_sm7125.mk \
+    $(LOCAL_DIR)/twrp_RMX2170.mk \
+    $(LOCAL_DIR)/twrp_RMX2061.mk \
+    $(LOCAL_DIR)/twrp_RMX3081.mk
 
 COMMON_LUNCH_CHOICES := \
     twrp_sm7125-eng \
-    twrp_sm7125-userdebug
+    twrp_sm7125-userdebug \
+    twrp_RMX2170-eng \
+    twrp_RMX2170-userdebug \
+    twrp_RMX2061-eng \
+    twrp_RMX2061-userdebug \
+    twrp_RMX3081-eng \
+    twrp_RMX3081-userdebug
