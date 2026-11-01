@@ -143,6 +143,7 @@ TW_THEME := portrait_hdpi
 TW_STATUS_ICONS_ALIGN := center
 TW_CUSTOM_CLOCK_POS := 450
 RECOVERY_SDCARD_ON_DATA := true
+TW_SKIP_ADDITIONAL_FSTAB := true
 TW_INCLUDE_NTFS_3G := true
 TW_NO_SCREEN_BLANK := true
 TW_BACKUP_EXCLUSIONS := /data/fonts/,/data/nandswap

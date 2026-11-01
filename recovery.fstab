@@ -1,22 +1,35 @@
-# Android fstab file.
-# The filesystem that contains the filesystem checker binary (typically /system) cannot
-# specify MF_CHECK, and must come before any filesystems that do specify MF_CHECK
+# Android recovery fstab.
+# Keep filesystems providing fsck tools before entries marked with the fs_mgr check flag.
 
-#TODO: Add 'check' as fs_mgr_flags with data partition.
-# Currently we dont have e2fsck compiled. So fs check would failed.
-#Rui.Tuo@BSP.Fingerprint.Secure, 2020/01/13, change the initial permission of vendor/firmware_mnt
-#<src>                                 <mnt_point>  <type>  <mnt_flags and options>                                                        <fs_mgr_flags>
-system                                 /system_root  ext4    ro,barrier=1,discard                                                               wait,logical,first_stage_mount
-system                                 /system_root  erofs   ro                                                                                 wait,logical,first_stage_mount
-system_ext                             /system_ext   ext4    ro,barrier=1,discard                                                               wait,logical,first_stage_mount
-system_ext                             /system_ext   erofs   ro                                                                                 wait,logical,first_stage_mount
-product                                /product      ext4    ro,barrier=1,discard                                                               wait,logical,first_stage_mount
-product                                /product      erofs   ro                                                                                 wait,logical,first_stage_mount
-vendor                                 /vendor       ext4    ro,barrier=1,discard                                                               wait,logical,first_stage_mount
-vendor                                 /vendor       erofs   ro                                                                                 wait,logical,first_stage_mount
-odm                                    /odm          ext4    ro,barrier=1,discard                                                               wait,logical,first_stage_mount
-odm                                    /odm          erofs   ro                                                                                 wait,logical,first_stage_mount
-/dev/block/by-name/cache               /cache        ext4    noatime,nosuid,nodev,barrier=1,data=ordered                                        wait,check,first_stage_mount,backup=0
-/dev/block/bootdevice/by-name/userdata /data         f2fs    noatime,nosuid,nodev,discard,reserve_root=32768,resgid=1065,fsync_mode=nobarrier,inlinecrypt   latemount,wait,resize,check,formattable,fileencryption=ice,wrappedkey,quota,reservedsize=128M,checkpoint=fs
-/dev/block/bootdevice/by-name/misc     /misc         emmc    defaults                                                                           defaults
-#
+#<src>                                                 <mnt_point>   <type>  <mnt_flags and options>                                                        <fs_mgr_flags>
+system                                                 /system_root  ext4    ro,barrier=1,discard                                                               wait,logical,first_stage_mount
+system_ext                                             /system_ext   ext4    ro,barrier=1,discard                                                               wait,logical,first_stage_mount
+product                                                /product      ext4    ro,barrier=1,discard                                                               wait,logical,first_stage_mount
+vendor                                                 /vendor       ext4    ro,barrier=1,discard                                                               wait,logical,first_stage_mount
+odm                                                    /odm          ext4    ro,barrier=1,discard                                                               wait,logical,first_stage_mount
+
+# Core boot images
+/dev/block/by-name/boot                                /boot         emmc    defaults                                                                           defaults
+/dev/block/by-name/dtbo                                /dtbo         emmc    defaults                                                                           defaults
+/dev/block/by-name/recovery                            /recovery     emmc    defaults                                                                           defaults
+/dev/block/by-name/vbmeta                              /vbmeta       emmc    defaults                                                                           defaults
+
+/dev/block/by-name/cache                               /cache        ext4    noatime,nosuid,nodev,barrier=1,data=ordered                                        wait,check,backup=0
+/dev/block/by-name/misc                                /misc         emmc    defaults                                                                           defaults
+
+# Firmware is exposed read-only in Mount; its raw image is grouped under
+# Firmware-update in Backup.
+/dev/block/by-name/modem                               /firmware     vfat    ro                                                                                 wait
+
+# Persist is mountable, while its raw image is the single backup entry.
+/dev/block/by-name/persist                             /persist      ext4    noatime,nosuid,nodev,ro                                                            wait
+
+# Metadata partition used for file-based encryption.
+/dev/block/by-name/metadata                            /metadata     ext4    noatime,nosuid,nodev,discard,data=journal,commit=1                             wait,check,formattable,first_stage_mount
+
+/dev/block/platform/soc/1d84000.ufshc/by-name/userdata /data         f2fs    noatime,nosuid,nodev,discard,reserve_root=32768,resgid=1065,fsync_mode=strict,inlinecrypt latemount,wait,check,formattable,reservedsize=128M,checkpoint=fs
+
+# Storage entries in priority order: Internal Storage -> MicroSD Card -> USB-Storage
+/storage                                               ext4          /data/media/0                                                                      flags=display="Internal Storage";storagename="Internal Storage";storage;backup=1;backupname="Internal Storage";removable;usermrf;fsflags="bind,utf8"
+/external_sd                                           auto          /dev/block/mmcblk0p1   /dev/block/mmcblk0                                                  flags=display="MicroSD Card";storagename="MicroSD Card";storage;wipeingui;removable;fsflags="nosuid,nodev,utf8"
+/usb_otg                                               auto          /dev/block/sdg1        /dev/block/sdg                                                      flags=display="USB-Storage";storagename="USB-Storage";storage;wipeingui;removable;fsflags="utf8"
