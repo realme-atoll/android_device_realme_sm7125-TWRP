@@ -14,7 +14,4 @@
 # limitations under the License.
 #
 
-for dev in sm7125 RMX2170 RMX2061 RMX3081; do
-    add_lunch_combo twrp_${dev}-eng
-    add_lunch_combo twrp_${dev}-userdebug
-done
+# Lunch targets are registered via COMMON_LUNCH_CHOICES in AndroidProducts.mk
