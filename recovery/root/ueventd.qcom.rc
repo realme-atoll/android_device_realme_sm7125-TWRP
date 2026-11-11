@@ -347,9 +347,6 @@ firmware_directories /mnt/vendor/persist/ /vendor/firmware_mnt/image/
 /dev/block/platform/soc/4744000.sdhci/by-name/frp       0600   system     system
 /dev/block/platform/soc/4804000.ufshc/by-name/frp       0600   system     system
 
-# This is temporary while using SD card for initial bring-up
-/dev/block/platform/soc/8804000.sdhci/by-name/frp       0600   system     system
-
 # Kmsg device
 /dev/kmsg                                               0620   root       system
 
