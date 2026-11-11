@@ -25,6 +25,10 @@
 # ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #
 
+on fs
+    wait /dev/block/platform/soc/${ro.boot.bootdevice} 10
+    symlink /dev/block/platform/soc/${ro.boot.bootdevice} /dev/block/bootdevice
+
 on early-init
     setprop sys.usb.configfs 0
 
@@ -43,9 +47,7 @@ on init
     mkdir /config/usb_gadget/g1/functions/mass_storage.0
     mkdir /config/usb_gadget/g1/functions/mtp.gs0
     mkdir /config/usb_gadget/g1/configs/b.1 0770
-    mkdir /config/usb_gadget/g2/configs/b.1 0770
     mkdir /config/usb_gadget/g1/configs/b.1/strings/0x409 0770
-    mkdir /config/usb_gadget/g2/configs/b.1/strings/0x409 0770
     write /config/usb_gadget/g1/configs/b.1/MaxPower 900
     write /config/usb_gadget/g1/os_desc/b_vendor_code 0x1
     write /config/usb_gadget/g1/os_desc/qw_sign "MSFT100"
@@ -132,5 +134,3 @@ on property:sys.usb.ffs.ready=1 && property:sys.usb.config=mass_storage,adb
 
 on property:sys.usb.config=fastboot
     start fastbootd
-	
-#
