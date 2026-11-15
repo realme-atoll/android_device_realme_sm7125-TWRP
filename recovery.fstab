@@ -1,6 +1,8 @@
-# Android recovery fstab.
-# Keep filesystems providing fsck tools before entries marked with the fs_mgr check flag.
+# Android fstab file.
+# The filesystem that contains the filesystem checker binary (typically /system) cannot
+# specify MF_CHECK, and must come before any filesystems that do specify MF_CHECK
 
+# Dynamic Partitions (Logical)
 #<src>                                                 <mnt_point>   <type>  <mnt_flags and options>                                                        <fs_mgr_flags>
 system                                                 /system_root  ext4    ro,barrier=1,discard                                                               wait,logical,first_stage_mount
 system_ext                                             /system_ext   ext4    ro,barrier=1,discard                                                               wait,logical,first_stage_mount
@@ -8,28 +10,21 @@ product                                                /product      ext4    ro,
 vendor                                                 /vendor       ext4    ro,barrier=1,discard                                                               wait,logical,first_stage_mount
 odm                                                    /odm          ext4    ro,barrier=1,discard                                                               wait,logical,first_stage_mount
 
-# Core boot images
-/dev/block/by-name/boot                                /boot         emmc    defaults                                                                           defaults
-/dev/block/by-name/dtbo                                /dtbo         emmc    defaults                                                                           defaults
-/dev/block/by-name/recovery                            /recovery     emmc    defaults                                                                           defaults
-/dev/block/by-name/vbmeta                              /vbmeta       emmc    defaults                                                                           defaults
+# Cache & Misc
+/dev/block/by-name/cache                               /cache        ext4    noatime,nosuid,nodev,barrier=1,data=ordered                                        wait,check,first_stage_mount,backup=0
+/dev/block/bootdevice/by-name/misc                     /misc         emmc    defaults                                                                           defaults
 
-/dev/block/by-name/cache                               /cache        ext4    noatime,nosuid,nodev,barrier=1,data=ordered                                        wait,check,backup=0
-/dev/block/by-name/misc                                /misc         emmc    defaults                                                                           defaults
+# Custom Partition (Commented out for TWRP)
+#/dev/block/bootdevice/by-name/custom                  /custom       ext4    barrier=1,discard                                                                  wait
 
-# Firmware is exposed read-only in Mount; its raw image is grouped under
-# Firmware-update in Backup.
-/dev/block/by-name/modem                               /firmware     vfat    ro                                                                                 wait
+# Modem Firmware
+/dev/block/bootdevice/by-name/modem                    /firmware     vfat    ro                                                                                 wait
 
-# Persist is mountable, while its raw image is the single backup entry.
-/dev/block/by-name/persist                             /persist      ext4    noatime,nosuid,nodev,ro                                                            wait
+# Persist
+/dev/block/bootdevice/by-name/persist                  /persist      ext4    noatime,nosuid,nodev,ro                                                            wait
 
-# Metadata partition used for file-based encryption.
-/dev/block/by-name/metadata                            /metadata     ext4    noatime,nosuid,nodev,discard,data=journal,commit=1                             wait,check,formattable,first_stage_mount
+# Metadata (FBE)
+/dev/block/by-name/metadata                            /metadata     ext4    noatime,nosuid,nodev,discard                                                       wait,check,formattable,first_stage_mount
 
-/dev/block/platform/soc/1d84000.ufshc/by-name/userdata /data         f2fs    noatime,nosuid,nodev,discard,reserve_root=32768,resgid=1065,fsync_mode=strict,inlinecrypt latemount,wait,check,formattable,reservedsize=128M,checkpoint=fs
-
-# Storage entries in priority order: Internal Storage -> MicroSD Card -> USB-Storage
-/storage                                               ext4          /data/media/0                                                                      flags=display="Internal Storage";storagename="Internal Storage";storage;backup=1;backupname="Internal Storage";removable;usermrf;fsflags="bind,utf8"
-/external_sd                                           auto          /dev/block/mmcblk0p1   /dev/block/mmcblk0                                                  flags=display="MicroSD Card";storagename="MicroSD Card";storage;wipeingui;removable;fsflags="nosuid,nodev,utf8"
-/usb_otg                                               auto          /dev/block/sdg1        /dev/block/sdg                                                      flags=display="USB-Storage";storagename="USB-Storage";storage;wipeingui;removable;fsflags="utf8"
+# Userdata / Data
+/dev/block/bootdevice/by-name/userdata                 /data         f2fs    noatime,nosuid,nodev,discard,reserve_root=32768,resgid=1065,fsync_mode=nobarrier,inlinecrypt   latemount,wait,resize,check,formattable,fileencryption=ice,wrappedkey,quota

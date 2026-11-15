@@ -36,6 +36,11 @@ PRODUCT_PACKAGES += \
     android.hardware.fastboot@1.0-impl-mock \
     fastbootd
 
+# Display HAL namespaces
+PRODUCT_SOONG_NAMESPACES += \
+    vendor/qcom/opensource/commonsys-intf/display \
+    vendor/qcom/opensource/display
+
 # Recovery HALs and libraries
 PRODUCT_PACKAGES += \
     android.hardware.keymaster@4.1
@@ -58,7 +63,10 @@ TARGET_RECOVERY_DEVICE_MODULES += \
     liblog \
     libpcrecpp \
     libutils \
-    libxml2
+    libxml2 \
+    vendor.display.config@1.0 \
+    vendor.display.config@2.0 \
+    libdisplayconfig.qti
 
 RECOVERY_LIBRARY_SOURCE_FILES += \
     $(TARGET_OUT_SHARED_LIBRARIES)/android.hidl.base@1.0.so \
@@ -78,7 +86,10 @@ RECOVERY_LIBRARY_SOURCE_FILES += \
     $(TARGET_OUT_SHARED_LIBRARIES)/liblog.so \
     $(TARGET_OUT_SHARED_LIBRARIES)/libpcrecpp.so \
     $(TARGET_OUT_SHARED_LIBRARIES)/libutils.so \
-    $(TARGET_OUT_SHARED_LIBRARIES)/libxml2.so
+    $(TARGET_OUT_SHARED_LIBRARIES)/libxml2.so \
+    $(TARGET_OUT_SYSTEM_EXT_SHARED_LIBRARIES)/vendor.display.config@1.0.so \
+    $(TARGET_OUT_SYSTEM_EXT_SHARED_LIBRARIES)/vendor.display.config@2.0.so \
+    $(TARGET_OUT_VENDOR_SHARED_LIBRARIES)/libdisplayconfig.qti.so
 
 # Qualcomm Decryption packages
 PRODUCT_PACKAGES += \
@@ -110,8 +121,10 @@ TARGET_USE_CUSTOM_LUN_FILE_PATH := "/config/usb_gadget/g1/functions/mass_storage
 # Add device-specific partition metadata explicitly. Common recovery init
 # files are provided by the shared device configuration.
 PRODUCT_COPY_FILES += \
+    $(DEVICE_PATH)/recovery/root/init.recovery.qcom.rc:recovery/root/init.recovery.qcom.rc \
     $(DEVICE_PATH)/recovery/root/init.recovery.usb.rc:recovery/root/init.recovery.usb.rc \
     $(DEVICE_PATH)/recovery/root/system/etc/twrp.flags:recovery/root/system/etc/twrp.flags \
     $(DEVICE_PATH)/recovery/root/ueventd.qcom.rc:recovery/root/ueventd.qcom.rc \
     $(DEVICE_PATH)/recovery/root/vendor/etc/vintf/manifest.xml:recovery/root/vendor/etc/vintf/manifest.xml \
-    $(DEVICE_PATH)/recovery/root/system/bin/runatboot.sh:recovery/root/system/bin/runatboot.sh
+    $(DEVICE_PATH)/recovery/root/system/bin/runatboot.sh:recovery/root/system/bin/runatboot.sh \
+    $(DEVICE_PATH)/recovery/root/system/bin/gui-props.sh:recovery/root/system/bin/gui-props.sh

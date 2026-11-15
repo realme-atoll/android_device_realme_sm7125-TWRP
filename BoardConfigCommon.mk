@@ -57,9 +57,7 @@ BOARD_KERNEL_CMDLINE := console=ttyMSM0,115200n8 \
 	earlycon=msm_geni_serial,0xa88000 \
 	androidboot.init_fatal_reboot_target=recovery \
 	androidboot.bootdevice=1d84000.ufshc \
-	cgroup.memory=nokmem,nosocket \
-	kpti=off \
-	irqaffinity=0-3
+	cgroup.memory=nokmem,nosocket
 BOARD_KERNEL_IMAGE_NAME := Image
 BOARD_KERNEL_PAGESIZE := 4096
 BOARD_BOOT_HEADER_VERSION := 2
@@ -74,7 +72,6 @@ BOARD_INCLUDE_RECOVERY_DTBO := true
 BOARD_INCLUDE_DTB_IN_BOOTIMG := true
 
 TARGET_PREBUILT_KERNEL := $(DEVICE_PATH)/prebuilt/kernel
-TARGET_PREBUILT_DTB := $(DEVICE_PATH)/prebuilt/dtb
 BOARD_PREBUILT_DTBIMAGE_DIR := $(DEVICE_PATH)/prebuilt/dts
 BOARD_PREBUILT_DTBOIMAGE := $(DEVICE_PATH)/prebuilt/dtbo
 
@@ -84,7 +81,6 @@ BOARD_MKBOOTIMG_ARGS += --ramdisk_offset $(BOARD_RAMDISK_OFFSET)
 BOARD_MKBOOTIMG_ARGS += --tags_offset $(BOARD_KERNEL_TAGS_OFFSET)
 BOARD_MKBOOTIMG_ARGS += --kernel_offset $(BOARD_KERNEL_OFFSET)
 BOARD_MKBOOTIMG_ARGS += --second_offset $(BOARD_KERNEL_SECOND_OFFSET)
-BOARD_MKBOOTIMG_ARGS += --dtb $(TARGET_PREBUILT_DTB)
 BOARD_MKBOOTIMG_ARGS += --dtb_offset $(BOARD_DTB_OFFSET)
 BOARD_MKBOOTIMG_ARGS += --header_version $(BOARD_BOOT_HEADER_VERSION)
 
@@ -118,7 +114,7 @@ BOARD_RECOVERY_BLDRMSG_OFFSET := 0
 # Recovery partition and ramdisk layout
 TARGET_RECOVERY_FSTAB := $(DEVICE_PATH)/recovery.fstab
 BOARD_CACHEIMAGE_FILE_SYSTEM_TYPE := ext4
-BOARD_ROOT_EXTRA_FOLDERS := bluetooth dsp firmware persist
+BOARD_ROOT_EXTRA_FOLDERS := bluetooth custom dsp firmware persist external_sd
 
 # Display and hardware telemetry
 TARGET_RECOVERY_PIXEL_FORMAT := RGBX_8888
@@ -164,7 +160,7 @@ TW_HAS_EDL_MODE := true
 TW_INCLUDE_FASTBOOTD := true
 TW_INCLUDE_RESETPROP := true
 TW_INCLUDE_REPACKTOOLS := true
-TW_MTP_DEVICE := /dev/usb-ffs/mtp
+TW_MTP_DEVICE := "/dev/mtp_usb"
 
 # Recovery logging and languages
 TWRP_INCLUDE_LOGCAT := true
