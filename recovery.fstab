@@ -5,10 +5,15 @@
 # Dynamic Partitions (Logical)
 #<src>                                                 <mnt_point>   <type>  <mnt_flags and options>                                                        <fs_mgr_flags>
 system                                                 /system_root  ext4    ro,barrier=1,discard                                                               wait,logical,first_stage_mount
+system                                                 /system_root  erofs   ro                                                                                 wait,logical,first_stage_mount
 system_ext                                             /system_ext   ext4    ro,barrier=1,discard                                                               wait,logical,first_stage_mount
+system_ext                                             /system_ext   erofs   ro                                                                                 wait,logical,first_stage_mount
 product                                                /product      ext4    ro,barrier=1,discard                                                               wait,logical,first_stage_mount
+product                                                /product      erofs   ro                                                                                 wait,logical,first_stage_mount
 vendor                                                 /vendor       ext4    ro,barrier=1,discard                                                               wait,logical,first_stage_mount
+vendor                                                 /vendor       erofs   ro                                                                                 wait,logical,first_stage_mount
 odm                                                    /odm          ext4    ro,barrier=1,discard                                                               wait,logical,first_stage_mount
+odm                                                    /odm          erofs   ro                                                                                 wait,logical,first_stage_mount
 
 # Cache & Misc
 /dev/block/by-name/cache                               /cache        ext4    noatime,nosuid,nodev,barrier=1,data=ordered                                        wait,check,first_stage_mount,backup=0

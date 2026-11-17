@@ -5,13 +5,12 @@
 # mount_point    fstype  device                                       flags
 
 # Dynamic Partitions
-/system_root     ext4    /dev/block/mapper/system                     flags=display="System";storagename="System"
-/system_ext      ext4    /dev/block/mapper/system_ext                 flags=display="System-EXT";storagename="System-EXT"
-/product         ext4    /dev/block/mapper/product                    flags=display="Product";storagename="Product"
-/vendor          ext4    /dev/block/mapper/vendor                     flags=display="Vendor";storagename="Vendor"
-/odm             ext4    /dev/block/mapper/odm                        flags=display="ODM";storagename="ODM"
+/system_root     auto    /dev/block/mapper/system                     flags=display="System";storagename="System";logical
+/system_ext      auto    /dev/block/mapper/system_ext                 flags=display="System-EXT";storagename="System-EXT";logical
+/product         auto    /dev/block/mapper/product                    flags=display="Product";storagename="Product";logical
+/vendor          auto    /dev/block/mapper/vendor                     flags=display="Vendor";storagename="Vendor";logical
+/odm             auto    /dev/block/mapper/odm                        flags=display="ODM";storagename="ODM";logical
 /system_image    emmc    /dev/block/mapper/system                     flags=display="System Image";storagename="System Image";flashimg;backup=1
-/super           emmc    /dev/block/bootdevice/by-name/super          flags=display="Super";storagename="Super";backup=1;flashimg
 
 # Cache & Recovery Settings
 /cache           ext4    /dev/block/by-name/cache                     flags=display="Cache";storagename="Cache"
@@ -64,9 +63,9 @@
 /persist_image   emmc    /dev/block/bootdevice/by-name/persist        flags=display="Persist";storagename="Persist";flashimg;backup=1
 
 # Userdata & Internal Storage
-/data            f2fs    /dev/block/bootdevice/by-name/userdata       flags=display="Data";storagename="Data";backup=1;wipeingui;wipeduringfactoryreset;canbewiped;fileencryption=ice:wrappedkey;keydirectory=/metadata/vold/metadata_encryption;quota;reservedsize=128M;sysfs_path=/sys/devices/platform/soc/1d84000.ufshc;checkpoint=fs;fsflags="noatime,nosuid,nodev,discard,reserve_root=32768,resgid=1065,fsync_mode=nobarrier,inlinecrypt"
+/data            f2fs    /dev/block/bootdevice/by-name/userdata       flags=display="Data";storagename="Data";backup=1;wipeingui;wipeduringfactoryreset;canbewiped;fileencryption=ice:wrappedkey;keydirectory=/metadata/vold/metadata_encryption;quota;fsflags="noatime,nosuid,nodev,discard,reserve_root=32768,resgid=1065,fsync_mode=nobarrier,inlinecrypt"
 /storage         ext4    /data/media/0                                flags=display="Internal Storage";storagename="Internal Storage";backup=0;usermrf;fsflags="bind,utf8"
 
 # Removable Storage
-/external_sd     auto    /dev/block/mmcblk0p1  /dev/block/mmcblk0     flags=display="MicroSD Card";storagename="MicroSD Card";storage;removable;fsflags="nosuid,nodev,utf8"
-/usb_otg         auto    /dev/block/sdg1       /dev/block/sdg         flags=display="USB-Storage";storagename="USB-Storage";storage;removable;fsflags="utf8"
+/external_sd     auto    /dev/block/mmcblk0p1  /dev/block/mmcblk0     flags=display="MicroSD Card";storagename="MicroSD Card";storage;wipeingui;removable;fsflags="nosuid,nodev,utf8"
+/usb_otg         auto    /dev/block/sdg1       /dev/block/sdg         flags=display="USB-Storage";storagename="USB-Storage";storage;wipeingui;removable;fsflags="utf8"
